@@ -18,9 +18,7 @@ public class ResizingArrayStack<Item> implements Iterable<Item> {
 
     private void resize(int max) {
         Item[] temp = (Item[]) new Object[max];
-        for (int i = 0; i < n; i++) {
-            temp[i] = elements[i];
-        }
+        if (n >= 0) System.arraycopy(elements, 0, temp, 0, n);
         elements = temp;
     }
 
