@@ -9,10 +9,12 @@ public class QuickFindUF implements UF {
         }
     }
 
+    @Override
     public boolean connected(int p, int q) {
         return id[p] == id[q];
     }
 
+    @Override
     public void union(int p, int q) {
         int pid = id[p];
         int qid = id[q];
