@@ -86,7 +86,7 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeLast()
     {
         if (size() == 0)
-            throw new IllegalArgumentException("Cannot remove from empty stack");
+            throw new IllegalArgumentException("Cannot remove from empty deque");
 
         Item item = last.item;
         last = last.previous;
