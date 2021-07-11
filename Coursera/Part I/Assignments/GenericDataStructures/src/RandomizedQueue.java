@@ -97,6 +97,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         public Item next()
         {
+            if (!hasNext())
+                throw new NoSuchElementException("Next element does not exist");
             int index = head + samples[current++];
             return items[index];
         }
@@ -112,7 +114,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         r.enqueue("D");
         r.enqueue("E");
 
-        StdOut.print ("20 samples:");
+        StdOut.print("20 samples:");
         for (int i = 0; i < 20; i++) {
             StdOut.print(r.sample() + "");
         }

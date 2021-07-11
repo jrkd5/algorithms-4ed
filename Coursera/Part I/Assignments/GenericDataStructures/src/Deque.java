@@ -1,6 +1,7 @@
 import edu.princeton.cs.algs4.StdOut;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
 
@@ -16,7 +17,9 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     // construct an empty deque
-    public Deque() {}
+    public Deque() {
+
+    }
 
     // is the deque empty?
     public boolean isEmpty()
@@ -57,10 +60,11 @@ public class Deque<Item> implements Iterable<Item> {
         Node oldLast = last;
         last = new Node();
         last.item = item;
-        oldLast.next = last;
         last.previous = oldLast;
         if (size() == 0) {
             first = last;
+        } else {
+            oldLast.next = last;
         }
         size++;
     }
@@ -69,7 +73,7 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeFirst()
     {
         if (size() == 0)
-            throw new IllegalArgumentException("Cannot remove from empty deque");
+            throw new NoSuchElementException("Cannot remove from empty deque");
 
         Item item = first.item;
         first = first.next;
@@ -86,7 +90,7 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeLast()
     {
         if (size() == 0)
-            throw new IllegalArgumentException("Cannot remove from empty deque");
+            throw new NoSuchElementException("Cannot remove from empty deque");
 
         Item item = last.item;
         last = last.previous;
@@ -131,12 +135,18 @@ public class Deque<Item> implements Iterable<Item> {
 
         Deque<String> ds1 = new Deque<>();
         Deque<String> ds2 = new Deque<>();
-        ds1.addFirst("A"); ds2.addFirst("A");
-        ds1.addLast("B"); ds2.addLast("B");
-        ds1.addFirst("C"); ds2.addFirst("C");
-        ds1.addLast("D"); ds2.addLast("D");
-        ds1.addFirst("E"); ds2.addFirst("E");
-        ds1.addLast("F"); ds2.addLast("F");
+        ds1.addFirst("A");
+        ds2.addFirst("A");
+        ds1.addLast("B");
+        ds2.addLast("B");
+        ds1.addFirst("C");
+        ds2.addFirst("C");
+        ds1.addLast("D");
+        ds2.addLast("D");
+        ds1.addFirst("E");
+        ds2.addFirst("E");
+        ds1.addLast("F");
+        ds2.addLast("F");
 
         StdOut.print("DS1: ");
         for (String item : ds1)
