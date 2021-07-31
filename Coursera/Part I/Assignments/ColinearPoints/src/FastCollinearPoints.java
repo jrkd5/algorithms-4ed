@@ -52,29 +52,37 @@ public class FastCollinearPoints {
             Point checkPoint =  points[i];
             Arrays.sort(sortedPoints, checkPoint.slopeOrder());
             int k = 1; // To avoid comparing a point to itself, slope -inf for degenerate point
-            int l = 2;
+            int m = 2;
             double prevSlope = checkPoint.slopeTo(sortedPoints[k]);
-            while (l < sortedPoints.length) {
-                double currSlope = checkPoint.slopeTo(sortedPoints[l]);
+            while (m < sortedPoints.length) {
+                double currSlope = checkPoint.slopeTo(sortedPoints[m]);
                 if (currSlope != prevSlope) {
-                    if (l - k >= 3 && uniqueSegment(points, checkPoint, prevSlope, i)) { // Check for duplicates
-                        Arrays.sort(sortedPoints, k, l);
-                        Point minPoint = sortedPoints[k];
-                        Point maxPoint = sortedPoints[l-1];
-                        if (checkPoint.compareTo(minPoint) < 0)
-                            minPoint = checkPoint;
-                        if (checkPoint.compareTo(maxPoint) > 0)
-                            maxPoint = checkPoint;
-                        LineSegment ls = new LineSegment(minPoint, maxPoint);
-                        segments.add(ls);
-                        numSegments++;
+                    if (m - k >= 3 && uniqueSegment(points, checkPoint, prevSlope, i)) { // Check for duplicates
+                        addLineSegment(sortedPoints, k, m, checkPoint);
                     }
-                    k = l;
+                    k = m;
                     prevSlope = currSlope;
                 }
-                l++;
+                m++;
+            }
+            if (m - k >= 3 && uniqueSegment(points, checkPoint, prevSlope, i)) { // Check for duplicates
+                addLineSegment(sortedPoints, k, m, checkPoint);
             }
         }
+    }
+
+    private void addLineSegment(Point[] points, int from, int to, Point refPoint)
+    {
+        Arrays.sort(points, from, to);
+        Point minPoint = points[from];
+        Point maxPoint = points[to-1];
+        if (refPoint.compareTo(minPoint) < 0)
+            minPoint = refPoint;
+        if (refPoint.compareTo(maxPoint) > 0)
+            maxPoint = refPoint;
+        LineSegment ls = new LineSegment(minPoint, maxPoint);
+        segments.add(ls);
+        numSegments++;
     }
 
     private boolean uniqueSegment(Point[] points, Point checkPoint, double prevSlope, int index)
@@ -108,40 +116,13 @@ public class FastCollinearPoints {
         }
     }
 
-    private void printArray(Point[] a){
-        StdOut.print("[");
-        for (Point p : a)
-            StdOut.print(p + ", ");
-        StdOut.println("]");
-    }
-
     public static void main(String[] args) {
-
-        // read the n points from a file
-        In in = new In(args[0]);
-        int n = in.readInt();
-        Point[] points = new Point[n];
-        for (int i = 0; i < n; i++) {
-            int x = in.readInt();
-            int y = in.readInt();
-            points[i] = new Point(x, y);
-        }
-
-        // draw the points
-        StdDraw.enableDoubleBuffering();
-        StdDraw.setXscale(0, 32768);
-        StdDraw.setYscale(0, 32768);
-        for (Point p : points) {
-            p.draw();
-        }
-        StdDraw.show();
-
-        // print and draw the line segments
-        FastCollinearPoints collinear = new FastCollinearPoints(points);
-        for (LineSegment segment : collinear.segments()) {
-            StdOut.println(segment);
-            segment.draw();
-        }
-        StdDraw.show();
+        Point[] points = new Point[4];
+        points[0] = new Point(7300, 10050);
+        points[1] = new Point(7300, 10450);
+        points[2] = new Point(7300, 25700);
+        points[3] = new Point(7300, 31650);
+        FastCollinearPoints br = new FastCollinearPoints(points);
+        br.printSegments();
     }
 }
